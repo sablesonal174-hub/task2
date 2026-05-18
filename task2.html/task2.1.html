@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculator</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,#1e3c72,#2a5298);
+    }
+
+    .calculator{
+      width:320px;
+      background:#fff;
+      border-radius:20px;
+      padding:20px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.3);
+      animation:bounce 1s ease;
+    }
+
+    /* Bounce Animation */
+    @keyframes bounce{
+      0%{
+        transform:scale(0.5);
+        opacity:0;
+      }
+      60%{
+        transform:scale(1.1);
+      }
+      100%{
+        transform:scale(1);
+        opacity:1;
+      }
+    }
+
+    .display{
+      width:100%;
+      height:70px;
+      border:none;
+      outline:none;
+      background:#f2f2f2;
+      border-radius:12px;
+      margin-bottom:20px;
+      text-align:right;
+      padding:15px;
+      font-size:30px;
+      font-weight:bold;
+      color:#333;
+    }
+
+    .buttons{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    button{
+      height:60px;
+      border:none;
+      border-radius:12px;
+      font-size:22px;
+      cursor:pointer;
+      transition:0.3s;
+      font-weight:bold;
+    }
+
+    button:hover{
+      transform:scale(1.08);
+    }
+
+    button:active{
+      transform:scale(0.95);
+    }
+
+    .number{
+      background:#f5f5f5;
+    }
+
+    .operator{
+      background:#ff9500;
+      color:white;
+    }
+
+    .equal{
+      background:#28a745;
+      color:white;
+      grid-column:span 2;
+    }
+
+    .clear{
+      background:#dc3545;
+      color:white;
+    }
+
+    .delete{
+      background:#6c757d;
+      color:white;
+    }
+
+    /* Responsive */
+    @media(max-width:400px){
+      .calculator{
+        width:95%;
+      }
+
+      button{
+        height:55px;
+        font-size:20px;
+      }
+
+      .display{
+        font-size:26px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="calculator">
+
+    <!-- Display Screen -->
+    <input type="text" class="display" id="display" readonly>
+
+    <!-- Buttons -->
+    <div class="buttons">
+
+      <button class="clear" onclick="clearDisplay()">C</button>
+      <button class="delete" onclick="deleteLast()">⌫</button>
+      <button class="operator" onclick="appendValue('%')">%</button>
+      <button class="operator" onclick="appendValue('/')">÷</button>
+
+      <button class="number" onclick="appendValue('7')">7</button>
+      <button class="number" onclick="appendValue('8')">8</button>
+      <button class="number" onclick="appendValue('9')">9</button>
+      <button class="operator" onclick="appendValue('*')">×</button>
+
+      <button class="number" onclick="appendValue('4')">4</button>
+      <button class="number" onclick="appendValue('5')">5</button>
+      <button class="number" onclick="appendValue('6')">6</button>
+      <button class="operator" onclick="appendValue('-')">−</button>
+
+      <button class="number" onclick="appendValue('1')">1</button>
+      <button class="number" onclick="appendValue('2')">2</button>
+      <button class="number" onclick="appendValue('3')">3</button>
+      <button class="operator" onclick="appendValue('+')">+</button>
+
+      <button class="number" onclick="appendValue('0')">0</button>
+      <button class="number" onclick="appendValue('.')">.</button>
+      <button class="equal" onclick="calculate()">=</button>
+
+    </div>
+  </div>
+
+  <script>
+
+    const display = document.getElementById("display");
+
+    // Append Value
+    function appendValue(value){
+      display.value += value;
+    }
+
+    // Clear Display
+    function clearDisplay(){
+      display.value = "";
+    }
+
+    // Delete Last Character
+    function deleteLast(){
+      display.value = display.value.slice(0,-1);
+    }
+
+    // Calculate Result
+    function calculate(){
+      try{
+        display.value = eval(display.value);
+      }
+      catch{
+        display.value = "Error";
+      }
+    }
+
+    // Keyboard Support
+    document.addEventListener("keydown",(e)=>{
+
+      const key = e.key;
+
+      // Numbers and Operators
+      if(
+        "0123456789+-*/.%".includes(key)
+      ){
+        appendValue(key);
+      }
+
+      // Enter Key
+      else if(key === "Enter"){
+        calculate();
+      }
+
+      // Backspace Key
+      else if(key === "Backspace"){
+        deleteLast();
+      }
+
+      // Escape Key
+      else if(key === "Escape"){
+        clearDisplay();
+      }
+    });
+
+  </script>
+
+</body>
+</html>
